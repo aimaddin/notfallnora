@@ -31,9 +31,18 @@ l.querySelectorAll('.menue a').forEach(function(a){a.addEventListener('click',zu
   <p><a href="index.html">← Zurück zur Startseite</a></p>
   <h1>Kontakt</h1>
   <p>Schön, dass du dich meldest. Schreib uns einfach über das Formular – wir lesen jede Nachricht und antworten so bald wie möglich per E-Mail.</p>
+  <h2>Fragen zu Bestellung, Zahlung, Download oder Rechnung</h2>
+  <p>Den Verkauf und die Auslieferung der E-Books übernimmt Digistore24. Dort bekommst du am schnellsten Hilfe, zum Beispiel wenn der Download-Link fehlt, du eine Rechnung brauchst oder eine Zahlung nicht geklappt hat.</p>
+  <ul class="punkte">
+    <li><strong>Deine Bestellbestätigung:</strong> In der E-Mail von Digistore24 findest du den Download-Link noch einmal und einen Link zum Support für deine Bestellung.</li>
+    <li><strong>Keine E-Mail bekommen?</strong> Schau bitte zuerst im Spam-Ordner nach. Die E-Mail kommt von Digistore24, nicht von uns.</li>
+    <li><strong>Hilfe-Center von Digistore24:</strong> <a href="https://help.digistore24.com/hc/de">help.digistore24.com</a></li>
+  </ul>
+
   <section id="formular" class="kontakt-bereich">
+    <h2>Nachricht schreiben</h2>
     <p id="formular-meldung" class="formular-meldung" role="alert" tabindex="-1" hidden></p>
-    <form class="formular" method="post" action="https://notfallnora-kontakt.mitgliederbereich.workers.dev/kontakt" accept-charset="utf-8">
+    <form class="formular" method="post" action="https://notfallnora.mitgliederbereich.workers.dev/kontakt" accept-charset="utf-8">
       <label for="name">Dein Name *</label>
       <input id="name" type="text" name="name" required maxlength="100" autocomplete="name">
       <label for="email">Deine E-Mail-Adresse *</label>
@@ -64,8 +73,8 @@ l.querySelectorAll('.menue a').forEach(function(a){a.addEventListener('click',zu
     var texte = {
       eingabe: "Bitte fülle Name, E-Mail-Adresse und Nachricht aus (mindestens 10 Zeichen).",
       lang: "Deine Nachricht ist zu lang. Bitte kürze sie auf höchstens 5.000 Zeichen.",
-      zuviele: "Du hast uns heute schon mehrere Nachrichten geschickt. Bitte versuch es morgen wieder oder schreib uns auf Instagram.",
-      versand: "Deine Nachricht konnte gerade nicht verschickt werden. Bitte versuch es später noch einmal oder schreib uns auf Instagram."
+      zuviele: "Du hast uns heute schon mehrere Nachrichten geschickt. Bitte versuch es morgen wieder.",
+      versand: "Deine Nachricht konnte gerade nicht verschickt werden. Bitte versuch es später noch einmal."
     };
     function zeige(code) { meldung.textContent = texte[code] || texte.versand; meldung.hidden = false; meldung.focus(); }
     form.elements.t.value = Date.now();
@@ -83,14 +92,6 @@ l.querySelectorAll('.menue a').forEach(function(a){a.addEventListener('click',zu
     });
   })();
   </script>
-  <h2>Lieber per Nachricht?</h2>
-  <p>Du erreichst uns auch auf Instagram unter <a href="https://www.instagram.com/notfallnora/" rel="noopener">@notfallnora</a>.</p>
-  <p class="hinweis">Bitte beachte: Im Notfall können wir nicht helfen. Wähle dann 112 oder 110 und folge den Hinweisen der Behörden.</p>
-  <h2>Postanschrift</h2>
-  <p>Schneider, Martin<br>
-  c/o Yhaguy Mi<br>
-  [PY-031410] nearby Piribebuy<br>
-  outside of Paraguay</p>
 </main>
 <footer class="fuss">
   <div class="huelle">
