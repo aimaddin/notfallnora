@@ -147,3 +147,6 @@ section[id]{scroll-margin-top:76px}
 .formular .knopf:disabled{opacity:.5;cursor:not-allowed}
 .versteckt{display:none !important}
 .danke{min-height:50vh}
+.falle{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.formular .klein{font-size:14px;color:var(--grau);margin-top:-2px}
+.formular-meldung{background:#FBEBDD;border:1px solid #E2B48A;color:#6b3b12;border-radius:10px;padding:12px 14px;font-size:16px}

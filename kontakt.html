@@ -31,33 +31,57 @@ l.querySelectorAll('.menue a').forEach(function(a){a.addEventListener('click',zu
   <p><a href="index.html">← Zurück zur Startseite</a></p>
   <h1>Kontakt</h1>
   <p>Schön, dass du dich meldest. Schreib uns einfach über das Formular – wir lesen jede Nachricht und antworten so bald wie möglich per E-Mail.</p>
-  <!-- Formular über Web3Forms: access_key = öffentlicher Formular-Schlüssel (kein Passwort). Er bestimmt, an welche E-Mail-Adresse die Anfragen gehen. -->
-  <form class="formular" action="https://api.web3forms.com/submit" method="POST">
-    <input type="hidden" name="access_key" value="WEB3FORMS-SCHLUESSEL-HIER-EINSETZEN">
-    <input type="hidden" name="subject" value="Neue Kontaktanfrage über die Website Notfall-Nora">
-    <input type="hidden" name="from_name" value="Website Notfall-Nora">
-    <input type="hidden" name="redirect" value="https://aimaddin.github.io/notfallnora/danke.html">
-    <input type="checkbox" name="botcheck" class="versteckt" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <label for="name">Name *</label>
-    <input id="name" name="name" type="text" required autocomplete="name" maxlength="100">
-    <label for="email">E-Mail-Adresse *</label>
-    <input id="email" name="email" type="email" required autocomplete="email" maxlength="150">
-    <label for="thema">Worum geht es?</label>
-    <select id="thema" name="thema">
-      <option>Frage zu einem Video oder einer Checkliste</option>
-      <option>Frage zu einem Produkt oder einer Bestellung</option>
-      <option>Kooperation oder Presse</option>
-      <option>Sonstiges</option>
-    </select>
-    <label for="nachricht">Deine Nachricht *</label>
-    <textarea id="nachricht" name="message" rows="7" required maxlength="5000"></textarea>
-    <p class="hinweis">* Pflichtfeld. Deine Angaben verwenden wir nur, um deine Anfrage zu beantworten. Mehr dazu in der <a href="datenschutz.html#kontaktformular">Datenschutzerklärung</a>.</p>
-    <button class="knopf" type="submit">Nachricht senden</button>
-    <p class="hinweis formular-aus" hidden>Das Formular ist noch nicht freigeschaltet. Bitte schreib uns so lange auf Instagram.</p>
-  </form>
+  <section id="formular" class="kontakt-bereich">
+    <p id="formular-meldung" class="formular-meldung" role="alert" tabindex="-1" hidden></p>
+    <form class="formular" method="post" action="https://notfallnora-kontakt.mitgliederbereich.workers.dev/kontakt" accept-charset="utf-8">
+      <label for="name">Dein Name *</label>
+      <input id="name" type="text" name="name" required maxlength="100" autocomplete="name">
+      <label for="email">Deine E-Mail-Adresse *</label>
+      <input id="email" type="email" name="email" required maxlength="200" autocomplete="email" inputmode="email">
+      <span class="klein">An diese Adresse schicken wir unsere Antwort.</span>
+      <label for="thema">Worum geht es?</label>
+      <select id="thema" name="thema">
+        <option>Frage zu einem Video oder einer Checkliste</option>
+        <option>Frage zu einem Buch oder Kurs</option>
+        <option>Bestellung oder Zugang</option>
+        <option>Zusammenarbeit</option>
+        <option selected>Sonstiges</option>
+      </select>
+      <label for="nachricht">Deine Nachricht *</label>
+      <textarea id="nachricht" name="nachricht" required minlength="10" maxlength="5000" rows="7"></textarea>
+      <div class="falle" aria-hidden="true"><label>Bitte leer lassen<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <input type="hidden" name="t" value="">
+      <p class="hinweis">* Pflichtfeld. Mit dem Absenden schickst du uns deinen Namen, deine E-Mail-Adresse und deine Nachricht. Wir nutzen sie nur, um deine Anfrage zu beantworten. Mehr dazu in der <a href="datenschutz.html#kontaktformular">Datenschutzerklärung</a>.</p>
+      <button class="knopf" type="submit">Nachricht senden</button>
+    </form>
+  </section>
   <script>
-  (function(){var f=document.querySelector('.formular');var k=f.querySelector('[name=access_key]').value;
-  if(k.indexOf('HIER-EINSETZEN')>-1){f.querySelector('button').disabled=true;f.querySelector('.formular-aus').hidden=false;}})();
+  (function () {
+    var form = document.querySelector(".formular");
+    if (!form) return;
+    var meldung = document.getElementById("formular-meldung");
+    var knopf = form.querySelector("button[type=submit]");
+    var texte = {
+      eingabe: "Bitte fülle Name, E-Mail-Adresse und Nachricht aus (mindestens 10 Zeichen).",
+      lang: "Deine Nachricht ist zu lang. Bitte kürze sie auf höchstens 5.000 Zeichen.",
+      zuviele: "Du hast uns heute schon mehrere Nachrichten geschickt. Bitte versuch es morgen wieder oder schreib uns auf Instagram.",
+      versand: "Deine Nachricht konnte gerade nicht verschickt werden. Bitte versuch es später noch einmal oder schreib uns auf Instagram."
+    };
+    function zeige(code) { meldung.textContent = texte[code] || texte.versand; meldung.hidden = false; meldung.focus(); }
+    form.elements.t.value = Date.now();
+    var fehler = new URLSearchParams(location.search).get("fehler");
+    if (fehler) zeige(fehler);
+    form.addEventListener("submit", function (e) {
+      if (!window.fetch || !window.FormData) return;
+      e.preventDefault();
+      meldung.hidden = true; knopf.disabled = true; knopf.textContent = "Wird gesendet …";
+      fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { if (j.ok) { location.href = "danke.html"; return; } zeige(j.fehler); })
+        .catch(function () { zeige("versand"); })
+        .then(function () { knopf.disabled = false; knopf.textContent = "Nachricht senden"; });
+    });
+  })();
   </script>
   <h2>Lieber per Nachricht?</h2>
   <p>Du erreichst uns auch auf Instagram unter <a href="https://www.instagram.com/notfallnora/" rel="noopener">@notfallnora</a>.</p>
