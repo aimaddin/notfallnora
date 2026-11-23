@@ -150,3 +150,13 @@ section[id]{scroll-margin-top:76px}
 .falle{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .formular .klein{font-size:14px;color:var(--grau);margin-top:-2px}
 .formular-meldung{background:#FBEBDD;border:1px solid #E2B48A;color:#6b3b12;border-radius:10px;padding:12px 14px;font-size:16px}
+
+/* Startseite: Bücher-Kacheln */
+.buecher{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:8px 0 10px}
+.buch{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--linie);border-radius:14px;padding:14px;text-decoration:none;color:var(--tinte)}
+.buch:hover{border-color:var(--gold)}
+.buch img{border-radius:6px;box-shadow:0 3px 10px rgba(0,0,0,.15);margin-bottom:4px}
+.buch strong{font-family:"Playfair Display",Georgia,serif;font-weight:500;color:var(--gruen);font-size:18px;line-height:1.2}
+.buch span{font-size:15px;line-height:1.45}
+.buch em{font-style:normal;font-weight:600;color:var(--gruen)}
+@media (max-width:560px){.buecher{gap:10px}.buch{padding:10px}.buch strong{font-size:16px}.buch span{font-size:14px}}
